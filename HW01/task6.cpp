@@ -2,12 +2,38 @@
 #include <cstdlib>
 #include <iostream>
 
-int main(int argc, char* argv[]) {
-    // TODO: read N from argv
+int main(int argc, char* argv[]) 
+{
 
-    // TODO: printf from 0 to N
+int N = std::atoi(argv[1]);
 
-    // TODO: std::cout from N to 0
+    // Print 0 through N using printf
+
+    for (int i = 0; i <= N; i++) {
+
+        printf("%d", i);
+
+        if (i < N)
+
+            printf(" ");
+
+    }
+
+    printf("\n");
+
+    // Print N through 0 using std::cout
+
+    for (int i = N; i >= 0; i--) {
+
+        std::cout << i;
+
+        if (i > 0)
+
+            std::cout << " ";
+
+    }
+
+    std::cout << "\n";
 
     return 0;
 }
