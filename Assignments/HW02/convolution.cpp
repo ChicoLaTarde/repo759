@@ -10,7 +10,7 @@ void convolve(const float *image, float *output, std::size_t n, const float *mas
 {
     
     //mask size must be odd.
-    if(m&1 == 0) return;
+    if((m & 1) == 0) return;
 
     int offset = static_cast<int>((m-1)<<1);
 
@@ -49,9 +49,11 @@ void convolve(const float *image, float *output, std::size_t n, const float *mas
                         // corner padding
                         value = 0.0f; //Outside both dimension
                     else
+                    {
                         value = 1.0f; //edge padding
                     
                         sum += mask[i * m + j] * value;
+                    }
                 }
             }
             
