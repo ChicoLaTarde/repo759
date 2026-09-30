@@ -12,7 +12,7 @@ void convolve(const float *image, float *output, std::size_t n, const float *mas
     //mask size must be odd.
     if((m & 1) == 0) return;
 
-    int offset = static_cast<int>((m-1)<<1);
+    int offset = static_cast<int>((m-1)/2);
 
     //loop through every output pixel
     for (std::size_t x = 0; x < n; ++x)
