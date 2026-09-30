@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/srv/home/duk/repo759/Assignments/HW02/plot_task1.py", line 1, in <module>
-    import matplotlib.pyplot as plt
-ModuleNotFoundError: No module named 'matplotlib'
