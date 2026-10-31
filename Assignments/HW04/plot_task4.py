@@ -47,6 +47,7 @@ def main():
     job_id, node = sources.pop()
     source = f"Slurm job {job_id} on {node}" if job_id != "local" else f"Local validation on {node} (not Euler)"
     figure, axes = plt.subplots(1, 3, figsize=(12, 4.5), sharey=True, layout="constrained")
+    maximum_time = max(time for values in measurements.values() for time in values.values())
     colors = ("#2563eb", "#d97706", "#059669")
     for axis, policy, color in zip(axes, policies, colors):
         threads = sorted(measurements[policy])
@@ -56,7 +57,7 @@ def main():
         axis.set_xlabel("Number of threads")
         axis.set_xticks(range(1, 9))
         axis.set_xlim(0.75, 8.25)
-        axis.set_ylim(bottom=0)
+        axis.set_ylim(0, maximum_time * 1.1)
         axis.set_xscale("linear")
         axis.set_yscale("linear")
         axis.grid(True, alpha=0.25)

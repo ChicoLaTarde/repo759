@@ -5,7 +5,7 @@
 #SBATCH --error=task3_slurm.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=8
 #SBATCH --mem=1G
 #SBATCH --time=00:20:00
 

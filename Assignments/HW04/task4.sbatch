@@ -7,7 +7,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=1G
-#SBATCH --time=01:00:00
+#SBATCH --time=00:45:00
 
 set -euo pipefail
 
@@ -15,7 +15,7 @@ cd "${SLURM_SUBMIT_DIR}"
 
 particles="${1:-1000}"
 end_time="${2:-100}"
-python3 -c 'import sys; import matplotlib; assert int(sys.argv[1]) >= 100 and float(sys.argv[2]) >= 100, "Use at least 100 particles and an end time of at least 100"' "$particles" "$end_time"
+python3 -c 'import sys; assert int(sys.argv[1]) >= 100 and float(sys.argv[2]) >= 100, "Use at least 100 particles and an end time of at least 100"' "$particles" "$end_time"
 
 export OMP_DYNAMIC=FALSE
 export OMP_PLACES=cores
@@ -46,4 +46,9 @@ for policy in static dynamic guided; do
     done
 done
 
-python3 plot_task4.py "$results" --output task4.pdf
+if python3 -c 'import matplotlib' >/dev/null 2>&1; then
+    python3 plot_task4.py "$results" --output task4.pdf
+else
+    printf 'Saved %s. Matplotlib is unavailable; copy the results and plot_task4.py locally, then run:\n' "$results"
+    printf 'python3 plot_task4.py %s --output task4.pdf\n' "$results"
+fi

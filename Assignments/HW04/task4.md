@@ -5,14 +5,15 @@ to `static`, `dynamic`, or `guided`; without this setting, the program uses stat
 scheduling. No explicit chunk size is supplied, so OpenMP uses each policy's
 default chunking.
 
-On Euler, load the GCC and Python environments provided by the cluster. Python
-must have Matplotlib installed. From the directory containing these files, run:
+On Euler, use the default `g++` and `python3`; no additional modules are loaded.
+From the directory containing these files, run:
 
 ```bash
 sbatch task4.sbatch
 ```
 
-The job requests one node with eight CPU cores. It compiles with
+The job requests one node with eight CPU cores and a 45-minute time limit, matching
+the `instruction` partition's maximum. It compiles with
 `g++ task3.cpp -Wall -O3 -std=c++17 -o task3 -fopenmp`, then runs each of the three
 policies with thread counts 1 through 8. The default problem size is 1000 particles
 and an end time of 100 (10,000 timesteps). To use the minimum requested size:
@@ -26,7 +27,9 @@ The benchmark fixes `NBODY_SEED=17` for comparable initial conditions and sets
 `NBODY_SAVE_POSITIONS=0` to exclude position-file writes from the measured time.
 Ordinary `task3` runs still save positions unless this setting is supplied.
 
-Outputs are `task4_results.csv`, the job's Slurm logs, and `task4.pdf`. The PDF
+Outputs are `task4_results.csv`, the job's Slurm logs, and, when Matplotlib is
+available, `task4.pdf`. Missing Matplotlib does not prevent the timing runs; copy
+the CSV and `plot_task4.py` locally to generate the PDF instead. The PDF
 contains three side-by-side linear-linear plots with a shared elapsed-time axis.
 Each point is one run; the timings include program initialization and cleanup.
 The CSV records the job ID and compute-node hostname. Avoid running multiple
