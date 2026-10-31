@@ -19,7 +19,44 @@ const double board_size = 4.0; // Size of the board
 // Function to calculate acceleration due to gravity
 void getAcc(const double pos[][3], const double mass[], double acc[][3], int N) {
 
-    // TODO:
+    for (int particle = 0; particle < N; ++particle) {
+        acc[particle][0] = 0.0;
+        acc[particle][1] = 0.0;
+        acc[particle][2] = 0.0;
+    }
+
+    const double softeningSquared = softening * softening;
+    for (int particle = 0; particle < N; ++particle) {
+        const double positionX = pos[particle][0];
+        const double positionY = pos[particle][1];
+        const double positionZ = pos[particle][2];
+        const double particleMass = mass[particle];
+        double accelerationX = acc[particle][0];
+        double accelerationY = acc[particle][1];
+        double accelerationZ = acc[particle][2];
+
+        for (int neighbor = particle + 1; neighbor < N; ++neighbor) {
+            const double deltaX = pos[neighbor][0] - positionX;
+            const double deltaY = pos[neighbor][1] - positionY;
+            const double deltaZ = pos[neighbor][2] - positionZ;
+            const double distanceSquared = deltaX * deltaX + deltaY * deltaY
+                                         + deltaZ * deltaZ + softeningSquared;
+            const double gravityScale = G / (distanceSquared * std::sqrt(distanceSquared));
+            const double neighborScale = gravityScale * mass[neighbor];
+            const double particleScale = gravityScale * particleMass;
+
+            accelerationX += deltaX * neighborScale;
+            accelerationY += deltaY * neighborScale;
+            accelerationZ += deltaZ * neighborScale;
+            acc[neighbor][0] -= deltaX * particleScale;
+            acc[neighbor][1] -= deltaY * particleScale;
+            acc[neighbor][2] -= deltaZ * particleScale;
+        }
+
+        acc[particle][0] = accelerationX;
+        acc[particle][1] = accelerationY;
+        acc[particle][2] = accelerationZ;
+    }
 
 }
 
@@ -82,9 +119,6 @@ int main(int argc, char *argv[]) {
     std::uniform_real_distribution<double> uniform_dist(0.0, 1.0);
     std::normal_distribution<double> normal_dist(0.0, 1.0);
 
-    // Simulation parameters
-    double t = 0.0;
-
     // Set initial masses and random positions/velocities
     for (int i = 0; i < N; i++) {
         mass[i] = uniform_dist(generator);
@@ -127,24 +161,42 @@ int main(int argc, char *argv[]) {
     // Main simulation loop
     for (int step = 0; step < Nt; step++) {
         
-        // TODO: (1/2) kick
+        // (1/2) kick
+        for (int particle = 0; particle < N; ++particle) {
+            vel[particle][0] += acc[particle][0] * (0.5 * dt);
+            vel[particle][1] += acc[particle][1] * (0.5 * dt);
+            vel[particle][2] += acc[particle][2] * (0.5 * dt);
+        }
 
-
-        // TODO: Drift
+        // Drift
+        for (int particle = 0; particle < N; ++particle) {
+            pos[particle][0] += vel[particle][0] * dt;
+            pos[particle][1] += vel[particle][1] * dt;
+            pos[particle][2] += vel[particle][2] * dt;
+        }
       
 
-        // TODO: Ensure particles stay within the board limits
+        for (int particle = 0; particle < N; ++particle) {
+            for (int axis = 0; axis < 3; ++axis) {
+                if (pos[particle][axis] > board_size) {
+                    pos[particle][axis] = board_size;
+                } else if (pos[particle][axis] < -board_size) {
+                    pos[particle][axis] = -board_size;
+                }
+            }
+        }
 
         // Update accelerations
         getAcc(pos, mass, acc, N);
 
-        // TODO: (1/2) kick
-
-        // Update time
-        t += dt;
+        for (int particle = 0; particle < N; ++particle) {
+            vel[particle][0] += acc[particle][0] * (0.5 * dt);
+            vel[particle][1] += acc[particle][1] * (0.5 * dt);
+            vel[particle][2] += acc[particle][2] * (0.5 * dt);
+        }
 
         // For debug: save positions to CSV at each step
-        // savePositionsToCSV(pos, N, step, filename);
+         savePositionsToCSV(pos, N, step, filename);
     }
 
     // Clean up dynamically allocated memory
