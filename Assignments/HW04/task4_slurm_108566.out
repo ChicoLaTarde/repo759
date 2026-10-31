@@ -1,0 +1,26 @@
+static: 1 threads, 361.493 ms
+static: 2 threads, 372.79 ms
+static: 3 threads, 276.431 ms
+static: 4 threads, 222.547 ms
+static: 5 threads, 191.642 ms
+static: 6 threads, 174.138 ms
+static: 7 threads, 162.628 ms
+static: 8 threads, 159.275 ms
+dynamic: 1 threads, 379.381 ms
+dynamic: 2 threads, 401.182 ms
+dynamic: 3 threads, 310.869 ms
+dynamic: 4 threads, 291.75 ms
+dynamic: 5 threads, 246.31 ms
+dynamic: 6 threads, 240.889 ms
+dynamic: 7 threads, 221.988 ms
+dynamic: 8 threads, 223.411 ms
+guided: 1 threads, 361.467 ms
+guided: 2 threads, 371.857 ms
+guided: 3 threads, 244.367 ms
+guided: 4 threads, 243.859 ms
+guided: 5 threads, 204.686 ms
+guided: 6 threads, 213.775 ms
+guided: 7 threads, 206.081 ms
+guided: 8 threads, 222.969 ms
+Saved task4_results.csv. Matplotlib is unavailable; copy the results and plot_task4.py locally, then run:
+python3 plot_task4.py task4_results.csv --output task4.pdf
