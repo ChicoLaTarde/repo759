@@ -1,6 +1,11 @@
 #ifndef VSCALE_CUH
 #define VSCALE_CUH
 
+#include "vscale.cu"
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
+
+
 // Scales (element-wise) the elements in array a with the factors stored in array b.
 // Writes the scaled results to b.
 // Both array a and b have length n.
